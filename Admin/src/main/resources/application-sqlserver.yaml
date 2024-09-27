@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url: jdbc:sqlserver://db8134.public.databaseasp.net:1433;databaseName=db8134;encrypt=true;trustServerCertificate=true;
+    username: db8134
+    password: 8w#CY-9dr7E@
+    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  data:
+    jpa:
+      repositories:
+        enabled: true
+  jpa:
+    show-sql: true
+    database-platform: org.hibernate.dialect.SQLServer2012Dialect
+    hibernate:
+      globally_quoted_identifiers: true
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      database: MYSQL
+      ddl-auto: update
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.SQLServer2012Dialect
+          #            storage_engine: innodb
+          format_sql: true
