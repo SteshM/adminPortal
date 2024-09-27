@@ -1,24 +1,20 @@
 package com.example.Admin.model;
 
-import com.example.Admin.service.Components.utils.DateUtils;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
-
 @Setter
 @Getter
-public class DepotAdmin {
+@Entity
+public class DeportDriver {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn(name="userId")
-    private MyUser myUser;
+    @JoinColumn(name = "driverId")
+    private MyUser driver;
     @ManyToOne
-    @JoinColumn(name = "depotId")
+    @JoinColumn(name = "depotDepotId")
     private Depot depot;
-    private String assignedOn = DateUtils.dateNowString();
 }
-
