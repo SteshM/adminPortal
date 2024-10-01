@@ -2,6 +2,7 @@ package com.example.Admin.auth;
 
 import com.example.Admin.dto.MinimalRes;
 import com.example.Admin.dto.RegisterDto;
+import com.example.Admin.dto.ResetPasswordDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatusCode;
@@ -16,6 +17,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AuthenticationController {
     private final AuthenticationService service;
+
     @PostMapping("/register")
     public ResponseEntity<Object> register  (@RequestBody RegisterDto registerDto){
         return ResponseEntity.ok(service.register(registerDto));

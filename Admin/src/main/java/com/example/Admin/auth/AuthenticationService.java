@@ -2,6 +2,7 @@ package com.example.Admin.auth;
 
 import com.example.Admin.dto.MinimalRes;
 import com.example.Admin.dto.RegisterDto;
+import com.example.Admin.dto.ResetPasswordDto;
 import com.example.Admin.dto.UserResponseDto;
 import com.example.Admin.model.MyUser;
 import com.example.Admin.model.Profile;
@@ -9,10 +10,7 @@ import com.example.Admin.repository.MyUserRepo;
 import com.example.Admin.repository.ProfileRepo;
 import com.example.Admin.service.Components.Main.CustomUser;
 import com.example.Admin.service.Components.impl.AnalyticGuide;
-import com.example.Admin.service.Components.utils.Exchanger;
-import com.example.Admin.service.Components.utils.JwtGenerator2;
-import com.example.Admin.service.Components.utils.PhoneNumberEditor;
-import com.example.Admin.service.Components.utils.RandomGenerator;
+import com.example.Admin.service.Components.utils.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,7 +29,7 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class AuthenticationService {
+public class AuthenticationService implements UserDetailsService {
 //    private JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AnalyticGuide analyticGuide;

@@ -9,11 +9,12 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.*;
 import java.util.stream.Collectors;
-
+@Component
 public class JwtGenerator2 {
     private static final String SECRET_KEY="e03c24c66303d84372e3c4a057a93e70664f4501e7116d6b5ae544173fa26b5a";
 
