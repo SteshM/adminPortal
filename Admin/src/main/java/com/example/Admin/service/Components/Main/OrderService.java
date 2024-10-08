@@ -203,7 +203,7 @@ import java.util.stream.Collectors;
         }
 
         @Data
-        class DepotDistance{
+       class DepotDistance{
             private double distance;
             private Depot depot;
         }

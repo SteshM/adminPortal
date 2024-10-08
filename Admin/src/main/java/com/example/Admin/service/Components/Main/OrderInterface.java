@@ -3,10 +3,11 @@ package com.example.Admin.service.Components.Main;
 import com.example.Admin.dto.CartItemRequest;
 import com.example.Admin.dto.ExtendedRes;
 import com.example.Admin.dto.MinimalRes;
+import com.example.Admin.dto.OrderDto;
 import org.springframework.data.domain.jaxb.SpringDataJaxb;
 
 public interface OrderInterface {
-    public MinimalRes placeOrder(SpringDataJaxb.OrderDto orderDto);
+    public MinimalRes placeOrder(OrderDto orderDto);
     public ExtendedRes getOrderItemDetails(Long orderId);
     public MinimalRes addCartItem(CartItemRequest cartItem);
     public ExtendedRes getCartItems();

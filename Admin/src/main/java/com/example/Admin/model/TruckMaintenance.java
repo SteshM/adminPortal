@@ -3,7 +3,10 @@ package com.example.Admin.model;
 import com.example.Admin.enums.MaintenanceStatus;
 import com.example.Admin.service.Components.utils.DateUtils;
 import jakarta.persistence.*;
+import lombok.Data;
 
+@Entity
+@Data
 public class TruckMaintenance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface TruckImagesRepo extends JpaRepository<Truck,Long> {
-//    public List<TruckImages> findByTruck(Truck truck);
+public interface TruckImagesRepo extends JpaRepository<TruckImages,Long> {
+    public List<TruckImages> findByTruck(Truck truck);
 
 }

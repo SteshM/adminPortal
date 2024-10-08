@@ -1,5 +1,6 @@
 package com.example.Admin.model;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -10,6 +11,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 public class AdminSuperAdmin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
