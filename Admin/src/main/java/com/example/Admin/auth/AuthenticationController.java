@@ -5,6 +5,7 @@ import com.example.Admin.dto.RegisterDto;
 import com.example.Admin.dto.ResetPasswordDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +15,9 @@ import java.util.Map;
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/api/v1/auth")
-@RequiredArgsConstructor
 public class AuthenticationController {
-    private final AuthenticationService service;
+    @Autowired
+    AuthenticationService service;
 
     @PostMapping("/register")
     public ResponseEntity<Object> register  (@RequestBody RegisterDto registerDto){
