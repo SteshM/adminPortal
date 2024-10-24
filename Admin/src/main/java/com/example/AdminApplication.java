@@ -1,5 +1,8 @@
 package com.example;
 
+import com.example.service.Components.utils.Seeder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
 @EnableAsync
 @SpringBootApplication
 @EnableJpaRepositories
-public class AdminApplication {
+public class AdminApplication implements CommandLineRunner {
 
 	public static void main(String[] args) {
 		SpringApplication.run(AdminApplication.class, args);
@@ -25,5 +28,11 @@ public class AdminApplication {
 	@Bean
 	RestTemplate restTemplate(){
 		return new RestTemplate();
+	}
+	@Autowired
+	Seeder seeder;
+	@Override
+	public void run(String... args) throws Exception {
+		seeder.startSeeding();
 	}
 }
