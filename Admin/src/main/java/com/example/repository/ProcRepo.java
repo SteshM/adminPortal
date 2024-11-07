@@ -256,7 +256,7 @@ public class ProcRepo {
 
     public List<DriverDto> getDepotDrivers(Long adminId){
         List<DriverDto> driverDtos = new ArrayList<>();
-        String query = "select * from get_drivers_in_admin_depots(?)";
+        String query = "SELECT * FROM get_drivers_in_admin_depots(?)";
         jdbcTemplate.query(query,new RowCallbackHandler() {
 
             @Override

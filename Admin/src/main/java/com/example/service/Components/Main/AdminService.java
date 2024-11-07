@@ -130,6 +130,7 @@ public class AdminService {
         MyUser driver= myUserRepo.findById(dispatch.getDriverId()).get();
         String confirmationCode = RandomGenerator.generateRandom(5);
         order.setDeliveryCode(confirmationCode);
+        order.setOrderDate(order.getOrderDate());
         MyUser retailer = order.getRetailer();
 
         //mail

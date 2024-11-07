@@ -27,4 +27,7 @@ public class MyUser {
     private boolean cloud;
     private String publicId;
     private boolean softDelete;
+
+
+
 }

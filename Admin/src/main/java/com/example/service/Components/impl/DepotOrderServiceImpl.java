@@ -116,6 +116,7 @@ public class DepotOrderServiceImpl implements DepotOrderService {
 
         depotOrder.setOrderName(RandomGenerator.generateRandom(7));
         depotOrder.setDepot(depot);
+        depotOrder.setOrderDate(depotOrder.getOrderDate());
         depotOrder.setStatus(OrderStatus.PENDING);
         depotOrder = depotOrderRepo.save(depotOrder);
 

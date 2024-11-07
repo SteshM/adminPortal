@@ -10,6 +10,7 @@ import com.example.model.Analytics.OrderAnalyticalDetails;
 import com.example.repository.*;
 import com.example.service.Components.impl.AnalyticGuide;
 import com.example.service.Components.utils.MyDtoMapper;
+import jakarta.transaction.Transactional;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
     @Service
@@ -117,53 +119,81 @@ import java.util.stream.Collectors;
                         .build();
 
             }}
-
         private final OrderAnalyticalDetailsRepo orderAnalyticalDetailsRepo;
-
+        @Transactional
         public MinimalRes assignOrderToDepot(AssignOrderToDepot assign) {
-            Order order = orderRepository.findById(assign.getOrderId()).get();
-            if(order == null){
+            // Retrieve the order
+            Optional<Order> optionalOrder = orderRepository.findById(assign.getOrderId());
+            if (optionalOrder.isEmpty()) {
                 return MinimalRes.builder()
                         .status(400)
-                        .message("Depot not found")
+                        .message("Order not found")
                         .build();
-            }else if(order.getDepot() != null){
+            }
+
+            Order order = optionalOrder.get();
+
+            if (order.getDepot() != null) {
                 return MinimalRes.builder()
                         .status(403)
-                        .message("Order already assigned")
+                        .message("Order already assigned to a depot")
                         .build();
             }
-            Depot depot = depotRepository.findById(assign.getDepotId()).get();
 
-            OrderAnalyticalDetails orderAnalyticalDetails = orderAnalyticalDetailsRepo.getAnalyticsDetails(assign.getOrderId());
+            // Retrieve the depot
+            Optional<Depot> optDepot = depotRepository.findById(assign.getDepotId());
+            if (optDepot.isEmpty()) {
+                return MinimalRes.builder()
+                        .status(400)
+                        .message("No depot found")
+                        .build();
+            }
 
+            Depot depot = optDepot.get();
+//
+//            // Retrieve OrderAnalyticalDetails
+//            Optional<OrderAnalyticalDetails> optOrderAnalyticalDetails = orderAnalyticalDetailsRepo.findById(assign.getOrderId());
+//            if (optOrderAnalyticalDetails.isEmpty()) {
+//                return MinimalRes.builder()
+//                        .status(400)
+//                        .message("No analytics details found")
+//                        .build();
+//            }
+//
+//            OrderAnalyticalDetails orderAnalyticalDetails = optOrderAnalyticalDetails.get();
+
+            // Update order details
             order.setDepot(depot);
             order.setStatus(OrderStatus.RECEIVED);
+            orderRepository.save(order); // Save order first to ensure it has the depot assigned
 
-            analyticGuide.addPayment(depot.getDepotId(), orderAnalyticalDetails.getTotalAmount());
-            analyticGuide.addProduct(depot.getDepotId(), orderAnalyticalDetails.getProducts());
-            analyticGuide.addOrder(depot.getDepotId());
-            orderRepository.save(order);
+//            // Update analytics
+//            analyticGuide.addPayment(depot.getDepotId(), orderAnalyticalDetails.getTotalAmount());
+//            analyticGuide.addProduct(depot.getDepotId(), orderAnalyticalDetails.getProducts());
+//            analyticGuide.addOrder(depot.getDepotId());
 
-
-            //negating the depot inventory
+            // Negate the depot inventory
             List<DepotProduct> depotProducts = new ArrayList<>();
-
             List<OrderItem> orderItems = orderItemRepository.findByOrder(order);
 
-            for(OrderItem orderItem: orderItems){
-                DepotProduct depotProduct = depotProductsRepo.findByProductAndQuantityAtAndDepot(orderItem.getProduct(), orderItem.getQuantityAttribute(), depot);
-                depotProduct.setQuantity(depotProduct.getQuantity()-orderItem.getQuantity());
-                depotProducts.add(depotProduct);
+            for (OrderItem orderItem : orderItems) {
+                Optional<DepotProduct> optDepotProduct = Optional.ofNullable(depotProductsRepo.findByProductAndQuantityAtAndDepot(orderItem.getProduct(), orderItem.getQuantityAttribute(), depot));
+                if (optDepotProduct.isPresent()) {
+                    DepotProduct depotProduct = optDepotProduct.get();
+                    depotProduct.setQuantity(depotProduct.getQuantity() - orderItem.getQuantity());
+                    depotProducts.add(depotProduct);
+                }
             }
-            depotProductsRepo.saveAll(depotProducts);
 
+            depotProductsRepo.saveAll(depotProducts);
             analyticGuide.addOrder(depot.getDepotId());
+
             return MinimalRes.builder()
                     .status(200)
-                    .message("Order assigned  to depot successfully")
+                    .message("Order assigned to depot successfully")
                     .build();
         }
+
 
 
         //checks if product with attribute exists in the depot
